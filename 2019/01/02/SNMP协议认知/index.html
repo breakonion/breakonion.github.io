@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="baidu-site-verification" content="L6Lm9d5Crl"/>
+  
+  
+  
+  
+  <title>SNMP协议认知 | 大魔王</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="SNMP协议基础原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SNMP协议认知">
+<meta property="og:url" content="http://ljg.dropsec.xyz/2019/01/02/SNMP%E5%8D%8F%E8%AE%AE%E8%AE%A4%E7%9F%A5/index.html">
+<meta property="og:site_name" content="大魔王">
+<meta property="og:description" content="SNMP协议基础原理">
+<meta property="article:published_time" content="2019-01-02T08:29:05.000Z">
+<meta property="article:modified_time" content="2019-01-02T15:20:23.169Z">
+<meta property="article:author" content="breakonion">
+<meta property="article:tag" content="SNMP">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="大魔王" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/avatar.png" class="js-avatar">
+            
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">breakonion</a></h1>
+        </hgroup>
+        
+        <p class="header-subtitle">一切杀不死我的，都使我变得更强</p>
+        
+        
+            <form>
+                <input type="text" class="st-default-search-input search" id="local-search-input" placeholder=" Search...">
+            </form>
+            <div id="local-search-result"></div>
+        
+        
+            <script type="text/javascript">
+                (function() {
+                    'use strict';
+                    function getMatchData(keyword, data) {
+                        var matchData = [];
+                        for(var i =0;i<data.length;i++){
+                            if(data[i].title.toLowerCase().indexOf(keyword)>=0) 
+                                matchData.push(data[i])
+                        }
+                        return matchData;
+                    }
+                    var $input = $('#local-search-input');
+                    var $resultContent = $('#local-search-result');
+                    $input.keyup(function(){
+                        $.ajax({
+                            url: '/search.json',
+                            dataType: "json",
+                            success: function( json ) {
+                                var str='<ul class=\"search-result-list\">';                
+                                var keyword = $input.val().trim().toLowerCase();
+                                $resultContent.innerHTML = "";
+                                if ($input.val().trim().length <= 0) {
+                                    $resultContent.empty();
+                                    $('#switch-area').show();
+                                    return;
+                                }
+                                var results = getMatchData(keyword, json);
+                                if(results.length === 0){
+                                    $resultContent.empty();
+                                    $('#switch-area').show();
+                                    return;
+                                } 
+                                for(var i =0; i<results.length; i++){
+                                    str += "<li><a href='"+ results[i].url +"' class='search-result-title'>"+ results[i].title +"</a></li>";
+                                }
+                                str += "</ul>";
+                                $resultContent.empty();
+                                $resultContent.append(str);
+                                $('#switch-area').hide();
+                            }
+                        });
+                    });
+                })();
+            </script>
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a  href="/archives/">所有文章</a></li>
+                        
+                            <li><a  href="/categories/know">认知提升</a></li>
+                        
+                            <li><a  href="/about/">关于我</a></li>
+                        
+                            <li><a  href="/categories/technology/">搞点事情</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl github"  target="_blank" href="https://github.com/breakonion/breakonion.github.io.git" title="github">github</a>
+                            
+                                <a class="fl weibo"  target="_blank" href="http://weibo.com/" title="weibo">weibo</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/SNMP/" style="font-size: 10px;">SNMP</a> <a href="/tags/hello/" style="font-size: 20px;">hello</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/pykms/" style="font-size: 10px;">pykms</a> <a href="/tags/windows-server-2012-r2/" style="font-size: 10px;">windows server 2012 r2</a> <a href="/tags/%E6%9D%82%E9%A1%B9/" style="font-size: 10px;">杂项</a> <a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 10px;">运维</a>
+                    </div>
+                </section>
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank"  class="main-nav-link switch-friends-link" href="http://www.zzti.edu.cn">zzti</a>
+                    
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">我是大魔王!</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">breakonion</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/avatar.png" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">breakonion</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">一切杀不死我的，都使我变得更强</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/categories/know">认知提升</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                    <li><a href="/categories/technology/">搞点事情</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="github" target="_blank" href="https://github.com/breakonion/breakonion.github.io.git" title="github">github</a>
+                    
+                        <a class="weibo" target="_blank" href="http://weibo.com/" title="weibo">weibo</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-SNMP协议认知" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a  href="/2019/01/02/SNMP%E5%8D%8F%E8%AE%AE%E8%AE%A4%E7%9F%A5/" class="article-date">
+      <time datetime="2019-01-02T08:29:05.000Z" itemprop="datePublished">2019-01-02</time>
+</a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SNMP协议认知
+    </h1>
+  
+
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/know/">know</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SNMP/" rel="tag">SNMP</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>SNMP协议基础原理</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h1 id="SNMP协议基础与原理"><a href="#SNMP协议基础与原理" class="headerlink" title="SNMP协议基础与原理"></a>SNMP协议基础与原理</h1><h2 id="（一）SNMP基础"><a href="#（一）SNMP基础" class="headerlink" title="（一）SNMP基础"></a>（一）SNMP基础</h2><h3 id="网络管理和SNMP"><a href="#网络管理和SNMP" class="headerlink" title="网络管理和SNMP"></a>网络管理和SNMP</h3><p>&ensp;&ensp;早期的计算机网络规模小，结构简单。随着计算机网络技术的迅速发展，网络规模日益庞大，结构越来越复杂，管理方式难以适应现代计算机网络设备种类繁多庞杂的特点。因此网络管理向高度集中和高度智能化的方向发展趋势逐渐凸显。</br>&ensp;&ensp;在此之前先后出现了多种网络管理标准，最早致力于网络管理标准化的组织是国际标准化组织ISO。 其制定的第一个网络标准为CMIS/CMIP。同期出现的其它网络管理协议还有高层实体管理系统HEMS、简单网关监控协议SGMP等。最终随着TCP/IP协议的普及新的网络管理标准的推出缓慢，最终IAB决定将已有的SGMP修订完善，发展为今天普遍的SNMP协议，目前SNMP已经发展到SNMPv3</br>&ensp;&ensp;网络管理的目的是能保证一个网络系统正常的运行。其在维护网络正常运行的基础上，还需能够采集和分析网络中的数据。能够查看网络中各节点的网络设备的性能，以及运行状况，并且能向相应的设备发送管理指令，再者能够及时的发现网络故障，为网络故障的排查以及网络的优化提供数据支持等。 </br>&ensp;&ensp;根据网络的组成，国际标准化组织将网络管理划分为五部分</br>① 故障管理</br>② 配置管理</br>③ 性能管理</br>④ 安全管理</br>⑤ 计费管理</br>故障管理和性能管理是其他管理活动的基础。早期的网络管理相对简单，大多是命令行式的手工管理。不同的网络设备，命令格式不同，管理方式不同。这种管理方式网络管理员不能主动发现问题，基本总是问题发生以后才察觉网络出现问题。网络管理的实质是网络管理人员从设备中获取正在运行的信息，再对信息进行分析、判断，从而确定整个网络的运行状态并采取措施的过程。网络管理协议有两个基本问题：一是管理信息表示与标识，二是网络设备与网络管理软件之间传递信息的管理协议。目前在实践中广泛应用的网络管理协议有三个。分别是SNMPv1、SNMPv2c、SNMPv3。<br/>&ensp;&ensp;SNMPv1简单易于实施，被业界广泛接受，但是其有非常致命的安全性缺点。唯一的安全机制是基于共同体字符串。SNMPv2c结合了SNMPv1的安全机制，同时在数据定义、协议操作类型等方面也做了较大变动。SNMPv3显著增加了安全性。增加了SNMP消息加密和认证，并加强了MIB访问控制。<br/></p>
+<h3 id="SNMP概述"><a href="#SNMP概述" class="headerlink" title="SNMP概述"></a>SNMP概述</h3><p>&ensp;&ensp;SNMP组成从功能上可以分为两大部分：管理信息定义与标识和SNMP实体间通信协议。管理信息定义与标识的核心内容是管理信息结构与标识(SMI)和许多管理信息库(MIB)。SMI规定如何定义、标识管理信息。MIB遵循SMI规定，定义具体的管理信息。SNMP协议不同版本的通信协议操作和通信协议安全机制不同。运行网络管理程序的计算机称为网络管理工作站(NMS)。运行在被管理的网络设备上完成SNMP功能的进程称为代理(Agent)。管理工作站向代理发起查询操作，获取网络设备的工作状态信息。代理则负责响应和处理来自管理工作站的服务请求，并向管理工作站报告本地发生的网络事件。这些设备可以是路由器、交换机、服务器、网络打印机等。在SNMPv3中，没有管理工作站与代理的概念。它们被统一称为SNMP应用程序实体。<br/>委托代理（Proxy Agent）是一种特殊的SNMP代理。其有三种用途(1)转发SNMP请求，其可以转发一个SNMP请求到另外一个SNMP应用程序实体。不同的网络传输域不同的SNMP版本之间，需要委托代理进行请求消息转发。<br/>&ensp;&ensp;SNMP是应用层协议，SNMP定义了一套自己的抽象语法。协议的语意和语法一般通过PDU(协议数据单元）实现。SNMP使用抽象语法标记(ASN.1)定义抽象语法和PDU。依据SMI定义一组标准的数据类型，这些数据类型的取值，表示一些对网络管理活动有意义的网络资源，定义这些数据的文本称为MIB。SIM、MIB和SNMP构成SNMP协议簇的基石。<br/>&ensp;&ensp;利用SMI，可以根据实际需要定义出更多类型的MIB。SNMP规定这些数据如何在应用程序之间交互，包括交互时的PDU格式、意义和消息顺序。</p>
+<h3 id="SNMP操作"><a href="#SNMP操作" class="headerlink" title="SNMP操作"></a>SNMP操作</h3><p>&ensp;&ensp;SNMP是管理工作站和代理之间的通信协议。工作站获取信息的方式有两种模式：查询和事件报告。查询是工作站主动发起，事件报告机制是代理向工作站报告情况。通信协议的功能操作通过定义不同的PDU来实现。常见的分别是get、getnext、set、response和Trap。get、getnext、set三种用于工作站发起主动操作，response PDU用于代理应答上面三种消息。Trap PDU用于代理主动向工作站报告网络事件。从C/S模式来看，工作站和代理都扮演真双重身份。查询操作，工作站是客户端，代理是服务端采用UDP 161端口。报告时间爱你操作中代理是客户端，工作站是服务端，端口采用 UDP 162端口。在实际的生产环境中其UDP端口是可配置的</p>
+<h2 id="二-抽象语法标记"><a href="#二-抽象语法标记" class="headerlink" title="(二)抽象语法标记"></a>(二)抽象语法标记</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>ASN.1(抽象语法标记)是一套用于描述独立于任何平台和编程语言的数据类型的标准语言。包括两部分内容：数据描述语言和数据编码规则。SNMP使用ASN.1定义数据。在计算机科学中，巴柯斯范式专门用来定义计算机语言。ASN.1也是由一系列巴柯斯范式定义的。</p>
+<h3 id="ASN-1基础"><a href="#ASN-1基础" class="headerlink" title="ASN.1基础"></a>ASN.1基础</h3><p>&ensp;&ensp;ASN.1定义的数据类型分为简单类型和结构类型。它不同于其他高级语言，它只用来定义数据类型，且每种数据类型都有对应的传输编码。数据是需要定义类型和赋值的。ASN.1的类型分为简单类型、结构类型、定义类型和其他类型。<br/>简单的结构类型有以下几种：<br/><br>        INTEGER &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;整形<br/>BOOLEAN &ensp;&ensp;&ensp;&ensp;&ensp;布尔型<br/>REAL &ensp; &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;实型<br/>OCTECT STRING &ensp;&ensp;&ensp;字节串型<br/>OBJECT IDENTIFIRE 标识符型<br/>ENUMERATED &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;枚举型<br/><br>ASN.1提供了4种结构类型，它们是：<br/><br>        SET &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;集合结构<br/>SEQUENCE    序列结构<br/>SET OF    &ensp;&ensp;&ensp;    元素相同的集合结构<br/>SEQUENCE OF 元素相同的序列结构<br/><br>其他类型有下面2种，除这两种以外其他ASN.1类型都有传输标识，称为类型标签(Tag)：<br/><br>        CHOICE &ensp;&ensp;&ensp;&ensp;选择类型<br/>ANY &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; 任意一种一直类型<br/><br>&ensp;&ensp;上面这些类型是ASN.1已经定义好的ASN.1内置类型。定义类型并没有产生新的ASN.1。定义类型只是为类型重新起个名字以便引用它。 值是某个类型取值范围内一个特定值，通常在定义名时完成赋值操作。在SNMP中，不仅有ASN.1定义的类型和值，还会遇到使用一系列产生式定义的宏。产生式中经常出现一些关键字和基本符号。它们在ASN.1标准中具有特定的意义。</p>
+<h2 id="（三）SNMP系统架构与应用分析"><a href="#（三）SNMP系统架构与应用分析" class="headerlink" title="（三）SNMP系统架构与应用分析"></a>（三）SNMP系统架构与应用分析</h2>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a  href="/2019/01/02/SNMP%E5%8D%8F%E8%AE%AE%E8%AE%A4%E7%9F%A5/">SNMP协议认知</a></p>
+        <p><span>文章作者:</span><a  href="/" title="访问 breakonion 的个人博客">breakonion</a></p>
+        <p><span>发布时间:</span>2019年01月02日 - 16时29分</p>
+        <p><span>最后更新:</span>2019年01月02日 - 23时20分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2019/01/02/SNMP%E5%8D%8F%E8%AE%AE%E8%AE%A4%E7%9F%A5/" title="SNMP协议认知">http://ljg.dropsec.xyz/2019/01/02/SNMP%E5%8D%8F%E8%AE%AE%E8%AE%A4%E7%9F%A5/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://ljg.dropsec.xyz/2019/01/02/SNMP%E5%8D%8F%E8%AE%AE%E8%AE%A4%E7%9F%A5/　　作者: breakonion" title=""></span>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" target="_blank" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+  
+    <a  href="/2018/10/03/Centos7-%E5%9F%BA%E7%A1%80%E8%BF%90%E7%BB%B4%E5%91%BD%E4%BB%A4/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Centos7 基础运维命令</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SNMP协议基础与原理"><span class="toc-number">1.</span> <span class="toc-text">SNMP协议基础与原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#（一）SNMP基础"><span class="toc-number">1.1.</span> <span class="toc-text">（一）SNMP基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#网络管理和SNMP"><span class="toc-number">1.1.1.</span> <span class="toc-text">网络管理和SNMP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SNMP概述"><span class="toc-number">1.1.2.</span> <span class="toc-text">SNMP概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SNMP操作"><span class="toc-number">1.1.3.</span> <span class="toc-text">SNMP操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-抽象语法标记"><span class="toc-number">1.2.</span> <span class="toc-text">(二)抽象语法标记</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#概述"><span class="toc-number">1.2.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ASN-1基础"><span class="toc-number">1.2.2.</span> <span class="toc-text">ASN.1基础</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#（三）SNMP系统架构与应用分析"><span class="toc-number">1.3.</span> <span class="toc-text">（三）SNMP系统架构与应用分析</span></a></li></ol></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <section class="changyan" id="comments">
+  <!--<div id="uyan_frame"></div>-->
+  <div id="SOHUCS"></div>
+  <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js"></script>
+  <script type="text/javascript">
+    window.changyan.api.config({
+      appid: 'xxxx',
+      conf: 'xxxxxxxxx'
+    });
+  </script>
+</section>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a  href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a  href="/2018/10/03/Centos7-%E5%9F%BA%E7%A1%80%E8%BF%90%E7%BB%B4%E5%91%BD%E4%BB%A4/" title="下一篇: Centos7 基础运维命令">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/01/02/SNMP%E5%8D%8F%E8%AE%AE%E8%AE%A4%E7%9F%A5/">SNMP协议认知</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/03/Centos7-%E5%9F%BA%E7%A1%80%E8%BF%90%E7%BB%B4%E5%91%BD%E4%BB%A4/">Centos7 基础运维命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/01/openstack%E5%AE%9E%E4%BE%8B%E9%97%AE%E9%A2%98/">openstack实例问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/10/openstack-cinder%E5%8D%B7%E6%97%A0%E6%B3%95%E5%88%A0%E9%99%A4/">openstack cinder卷无法删除 </a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/27/Centos7-openstack%E6%9D%82%E9%A1%B9/">Centos-openstack杂项</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/24/KMS%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E5%8F%8A%E4%BD%BF%E7%94%A8/">KMS服务器搭建及使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/12/%E9%80%9A%E8%BF%87Windows%E9%83%A8%E7%BD%B2%E6%9C%8D%E5%8A%A1%EF%BC%88WDS%EF%BC%89%E5%AE%9E%E7%8E%B0%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%89%B9%E9%87%8F%E5%AE%89%E8%A3%85%E5%92%8C%E5%AE%9A%E5%88%B6/">通过Windows部署服务实现批量部署操作系统</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/10/first%20blood/">breakapple</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/09/test/">hello world</a></li></ul>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        // $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2020 breakonion
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a><a href="https://github.com/maochunguang" target="_blank">Blog</a> by tommy
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >极客到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 4;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'xxxxxx', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?xxcxcxcsdsf";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

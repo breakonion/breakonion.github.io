@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="baidu-site-verification" content="L6Lm9d5Crl"/>
+  
+  
+  
+  
+  <title>Centos-openstack杂项 | 大魔王</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="chrony 时间同步">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Centos-openstack杂项">
+<meta property="og:url" content="http://ljg.dropsec.xyz/2017/07/27/Centos7-openstack%E6%9D%82%E9%A1%B9/index.html">
+<meta property="og:site_name" content="大魔王">
+<meta property="og:description" content="chrony 时间同步">
+<meta property="og:image" content="http://i.imgur.com/apO9Bej.png">
+<meta property="og:image" content="http://i.imgur.com/VJwf7st.png">
+<meta property="og:image" content="http://i.imgur.com/BkUvdmy.png">
+<meta property="og:image" content="http://i.imgur.com/66jxdE6.png">
+<meta property="og:image" content="http://i.imgur.com/Vdkzsj2.png">
+<meta property="og:image" content="http://i.imgur.com/v8DGO90.png">
+<meta property="article:published_time" content="2017-07-27T07:09:05.000Z">
+<meta property="article:modified_time" content="2017-10-06T06:41:10.533Z">
+<meta property="article:author" content="breakonion">
+<meta property="article:tag" content="杂项">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://i.imgur.com/apO9Bej.png">
+  
+    <link rel="alternative" href="/atom.xml" title="大魔王" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/avatar.png" class="js-avatar">
+            
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">breakonion</a></h1>
+        </hgroup>
+        
+        <p class="header-subtitle">一切杀不死我的，都使我变得更强</p>
+        
+        
+            <form>
+                <input type="text" class="st-default-search-input search" id="local-search-input" placeholder=" Search...">
+            </form>
+            <div id="local-search-result"></div>
+        
+        
+            <script type="text/javascript">
+                (function() {
+                    'use strict';
+                    function getMatchData(keyword, data) {
+                        var matchData = [];
+                        for(var i =0;i<data.length;i++){
+                            if(data[i].title.toLowerCase().indexOf(keyword)>=0) 
+                                matchData.push(data[i])
+                        }
+                        return matchData;
+                    }
+                    var $input = $('#local-search-input');
+                    var $resultContent = $('#local-search-result');
+                    $input.keyup(function(){
+                        $.ajax({
+                            url: '/search.json',
+                            dataType: "json",
+                            success: function( json ) {
+                                var str='<ul class=\"search-result-list\">';                
+                                var keyword = $input.val().trim().toLowerCase();
+                                $resultContent.innerHTML = "";
+                                if ($input.val().trim().length <= 0) {
+                                    $resultContent.empty();
+                                    $('#switch-area').show();
+                                    return;
+                                }
+                                var results = getMatchData(keyword, json);
+                                if(results.length === 0){
+                                    $resultContent.empty();
+                                    $('#switch-area').show();
+                                    return;
+                                } 
+                                for(var i =0; i<results.length; i++){
+                                    str += "<li><a href='"+ results[i].url +"' class='search-result-title'>"+ results[i].title +"</a></li>";
+                                }
+                                str += "</ul>";
+                                $resultContent.empty();
+                                $resultContent.append(str);
+                                $('#switch-area').hide();
+                            }
+                        });
+                    });
+                })();
+            </script>
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a  href="/archives/">所有文章</a></li>
+                        
+                            <li><a  href="/categories/know">认知提升</a></li>
+                        
+                            <li><a  href="/about/">关于我</a></li>
+                        
+                            <li><a  href="/categories/technology/">搞点事情</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl github"  target="_blank" href="https://github.com/breakonion/breakonion.github.io.git" title="github">github</a>
+                            
+                                <a class="fl weibo"  target="_blank" href="http://weibo.com/" title="weibo">weibo</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/SNMP/" style="font-size: 10px;">SNMP</a> <a href="/tags/hello/" style="font-size: 20px;">hello</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/pykms/" style="font-size: 10px;">pykms</a> <a href="/tags/windows-server-2012-r2/" style="font-size: 10px;">windows server 2012 r2</a> <a href="/tags/%E6%9D%82%E9%A1%B9/" style="font-size: 10px;">杂项</a> <a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 10px;">运维</a>
+                    </div>
+                </section>
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank"  class="main-nav-link switch-friends-link" href="http://www.zzti.edu.cn">zzti</a>
+                    
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">我是大魔王!</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">breakonion</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/avatar.png" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">breakonion</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">一切杀不死我的，都使我变得更强</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/categories/know">认知提升</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                    <li><a href="/categories/technology/">搞点事情</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="github" target="_blank" href="https://github.com/breakonion/breakonion.github.io.git" title="github">github</a>
+                    
+                        <a class="weibo" target="_blank" href="http://weibo.com/" title="weibo">weibo</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-Centos7-openstack杂项" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a  href="/2017/07/27/Centos7-openstack%E6%9D%82%E9%A1%B9/" class="article-date">
+      <time datetime="2017-07-27T07:09:05.000Z" itemprop="datePublished">2017-07-27</time>
+</a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Centos-openstack杂项
+    </h1>
+  
+
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9/" rel="tag">杂项</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>chrony 时间同步</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h3 id="安装chrony"><a href="#安装chrony" class="headerlink" title="安装chrony"></a>安装chrony</h3><pre><code>yum install chrony</code></pre><h3 id="配置时间同步源"><a href="#配置时间同步源" class="headerlink" title="配置时间同步源"></a>配置时间同步源</h3><pre><code>vim /etc/chrony.conf</code></pre><p>添加 service NTP.service iburst<br><strong>注意：</strong>用服务器的ip地址代替NTP.service</p>
+<h3 id="启动服务并加入开机启动项"><a href="#启动服务并加入开机启动项" class="headerlink" title="启动服务并加入开机启动项"></a>启动服务并加入开机启动项</h3><pre><code>systemctl enable chronyd.service
+systemctl start chronyd.service</code></pre><h3 id="查看时间同步"><a href="#查看时间同步" class="headerlink" title="查看时间同步"></a>查看时间同步</h3><pre><code>chronyc sources</code></pre><h3 id="修改时区"><a href="#修改时区" class="headerlink" title="修改时区"></a>修改时区</h3><pre><code>timedatectl set-timezone Asia/Shanghai</code></pre><h3 id="修改时间加入到硬件"><a href="#修改时间加入到硬件" class="headerlink" title="修改时间加入到硬件"></a>修改时间加入到硬件</h3><pre><code>hwclock -w</code></pre><h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><pre><code>cd /usr/share/zoneinfo  #查看时区</code></pre><h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h3><pre><code>tail -f /var/log/keystone/keystone.conf
+tail -f /var/log/nova/nova-compute.log</code></pre><h3 id="yum被占用"><a href="#yum被占用" class="headerlink" title="yum被占用"></a>yum被占用</h3><pre><code>rm -rf /var/run/yum.pid</code></pre><h3 id="关闭firewall"><a href="#关闭firewall" class="headerlink" title="关闭firewall"></a>关闭firewall</h3><pre><code>service firewalld stop
+systemctl disable firewalld.service</code></pre><h3 id="安装iptables防火墙"><a href="#安装iptables防火墙" class="headerlink" title="安装iptables防火墙"></a>安装iptables防火墙</h3><pre><code>yum install iptables-service
+vim /etc/sysconfig/iptables</code></pre><p>——–不华丽的分割线———<br><br/></p>
+<h2 id="openstack-排错"><a href="#openstack-排错" class="headerlink" title="openstack 排错"></a>openstack 排错</h2><h3 id="cinder配置文件都没错但就是从控制节点用命令-cinder-service-list验证时发现cinder一直up不起来"><a href="#cinder配置文件都没错但就是从控制节点用命令-cinder-service-list验证时发现cinder一直up不起来" class="headerlink" title="cinder配置文件都没错但就是从控制节点用命令 cinder service-list验证时发现cinder一直up不起来"></a>cinder配置文件都没错但就是从控制节点用命令 cinder service-list验证时发现cinder一直up不起来</h3><p>查看日志 cinder-volume.log</p>
+<pre><code>tail -f /var/log/cinder/cinder-volume.log</code></pre><p>发现如下<br><img src="http://i.imgur.com/apO9Bej.png" alt=""><br><img src="http://i.imgur.com/VJwf7st.png" alt=""><br>日志是个好东西，可以看出是控制节点的Mysql连接不上，被防火墙给墙掉了。查找mysql对应端口3306 在iptables里面添加一条规则重启iptables 解决</p>
+<pre><code>vim /etc/sysconfig/iptables
+-A INPUT -p tcp -m tcp --dport 3306 -j ACCEPT #添加这一条
+sudo service iptables restart</code></pre><p>————————-分割线————————-</p>
+<h3 id="dashboard仪表盘无法登陆"><a href="#dashboard仪表盘无法登陆" class="headerlink" title="dashboard仪表盘无法登陆"></a>dashboard仪表盘无法登陆</h3><p><img src="http://i.imgur.com/BkUvdmy.png" alt=""><br><br/><br>首先学会查看日志</p>
+<pre><code>tail -f /var/log/httpd/error_log</code></pre><p>找到错误<br><img src="http://i.imgur.com/66jxdE6.png" alt=""></p>
+<p>解决办法：更改dashboard的local_settings配置文件并重启httpd和memcached</p>
+<pre><code>root#vim /etc/openstack-dashboard/local_settings
+#SESSION_ENGINE = ‘django.contrib.sessions.backends.cache‘
+SESSION_ENGINE = ‘django.contrib.sessions.backends.file‘
+root# systemctl restart httpd memcached
+root# systemctl status httpd memcached</code></pre><h3 id="创建实例No-valid-host-was-found-There-are-not-enough-hosts-available"><a href="#创建实例No-valid-host-was-found-There-are-not-enough-hosts-available" class="headerlink" title="创建实例No valid host was found. There are not enough hosts available"></a>创建实例No valid host was found. There are not enough hosts available</h3><p>   查看nova下的调度信息</p>
+<pre><code>cat /var/log/nova/nova-scheduler.log</code></pre><p>显示没有主机返回</p>
+<pre><code>nova.filters [req-c721e8e3-53b3-446a-a71c-5a185f1bc3a4 7858bcc09cd14e8fbbff141fc1e7181f
+ c5daa5b11e9448a7a494901b8f25f2ae - - -] 
+Filtering removed all hosts for the request with instance ID &apos;a6b1e821-ee1d-4a01-b938-686dcad02c4e&apos;. 
+Filter results: [&apos;RetryFilter: (start: 1, end: 1)&apos;, &apos;AvailabilityZoneFilter: (start: 1, end: 1)&apos;, &apos;
+RamFilter: (start: 1, end: 1)&apos;, &apos;DiskFilter: (start: 1, end: 0)&apos;]</code></pre><p>解决方案：修改nova的 配置文件，使得调度过滤器能够通过设置</p>
+<pre><code>vim /etc/nova/nova.conf
+scheduler_default_filters=AllHostsFilter #添加本配置</code></pre><p>就算是在hardboard显示资源很充足    如果卷组cinder-volumes分配不当依然会出现host no valud enough错误 无法给实例分配资源 但是会分配双ip</p>
+<p>—————–分割线———————————</p>
+<h3 id="创建实例遇到"><a href="#创建实例遇到" class="headerlink" title="创建实例遇到"></a>创建实例遇到</h3><p><img src="http://i.imgur.com/Vdkzsj2.png" alt=""><br>（本图摘于网络）<br>我们的错误和图不完全一样，我的提示是查看neutron日志<br>这种错误会提示根据 neutron的日志排查错误</p>
+<pre><code>cat / var/log/neutron/server.log</code></pre><p>另外注意/ var/log/neutron/ 下各种日志是否有报错信息<br>本次在 server.log中发现 两个网桥没起来</p>
+<p>  ‘2017-07-31 10:44:46.229 1123 WARNING neutron.db.agents_db [req-0c16318b-0a14-47ce-a803-f16ccbf853ea - - - - -] Agent healthcheck: found 2 dead agents out of 6:Type       Last heartbeat host<br/><br>Linux bridge agent  2017-07-30 13:05:03 compute2<br/><br>Linux bridge agent  2017-07-30 08:27:40 compute1<br/></p>
+<p>原因分析: 由于在虚拟机里 计算结点网卡ip变了   所以得修改计算节点网络配置文件中的 my_ip=现在的ip</p>
+<pre><code>vim /etc/neutron/plugins/ml2/linuxbridge_agent.ini</code></pre><p>重启计算节点相关服务恢复正常</p>
+<p>———————分割线————————–</p>
+<h3 id="打开OpenStack控制台后，控制台出错，显示Failed-to-connect-to-server-code-1006-，如下图"><a href="#打开OpenStack控制台后，控制台出错，显示Failed-to-connect-to-server-code-1006-，如下图" class="headerlink" title="打开OpenStack控制台后，控制台出错，显示Failed to connect to server (code: 1006)，如下图"></a>打开OpenStack控制台后，控制台出错，显示Failed to connect to server (code: 1006)，如下图</h3><p><img src="http://i.imgur.com/v8DGO90.png" alt=""><br>在配置没有问题的情况下，Iptables规则阻挡了你，所以应该打开对应的端口<br>确认是否打开了端口：</p>
+<p>a)计算节点处：用命令检查5900和5999端口是否被Iptables规则允许。</p>
+<pre><code>iptables -nL |grep 5900  
+iptables -nL |grep 5999  </code></pre><p>如果没有，创建规则允许端口。</p>
+<pre><code>iptables -I INPUT -p tcp --dport 5900 -j ACCEPT  
+iptables -I INPUT -p tcp --dport 5999 -j ACCEPT  </code></pre><p>b)控制节点处：用命令检查6080端口是否被Iptables规则允许。</p>
+<pre><code>iptables -nL |grep 6080  </code></pre><p>如果没有，创建规则允许端口。</p>
+<pre><code>iptables -I INPUT -p tcp --dport 6088 -j ACCEPT  </code></pre><p>重启防火墙，重启实例即可连接成功</p>
+<p>如果重启防火墙还是不通记得重启计算节点的相关服务如 nova-compute libvirt</p>
+<pre><code>systemctl restart openstack-nova-compute.service
+systemctl start libvirtd.service openstack-nova-compute.service</code></pre><p>——————————-分割线—————————————–</p>
+<h3 id="使用cirros镜像启动实例-OpenStack创建实例控制台显示starting-up…-没反应"><a href="#使用cirros镜像启动实例-OpenStack创建实例控制台显示starting-up…-没反应" class="headerlink" title="使用cirros镜像启动实例 OpenStack创建实例控制台显示starting up… 没反应"></a>使用cirros镜像启动实例 OpenStack创建实例控制台显示starting up… 没反应</h3><p>If using libvirt 2 (guess yes by the error). Add the following in libvirt section of nova.conf and restart nova-compute service</p>
+<p>[libvirt]<br>cpu_mode = none<br>发现自己也在用libvirt2那么</p>
+<p>在计算节点中 修改 cpu_mode = none</p>
+<pre><code>~# vim /etc/nova/nova.conf
+~# systemctl restart openstack-nova-compute</code></pre><h3 id="删除网络出错"><a href="#删除网络出错" class="headerlink" title="删除网络出错"></a>删除网络出错</h3><p>删除网络前必须先删除网络接口，然后再删除网络 就像网络拓扑图，还在用线插在路由器上</p>
+<h2 id="磁盘操作"><a href="#磁盘操作" class="headerlink" title="磁盘操作"></a>磁盘操作</h2><h3 id="LVM-pvcreate提示：Device-dev-sdb-not-found-or-ignored-by-filtering"><a href="#LVM-pvcreate提示：Device-dev-sdb-not-found-or-ignored-by-filtering" class="headerlink" title="LVM pvcreate提示：Device /dev/sdb not found (or ignored by filtering)"></a>LVM pvcreate提示：Device /dev/sdb not found (or ignored by filtering)</h3><pre><code>dd if=/dev/urandom of=/dev/sdb bs=512 count=64</code></pre><p>运行了一下 sdb 分区都没了。</p>
+<pre><code>pvcreate /dev/sdb
+Physical volume &quot;/dev/sdb1&quot; successfully created</code></pre><h2 id="创建卷组：创建卷组的命令为vgcreate，将使用pvcreate建立的物理卷创建为一个完整的卷组："><a href="#创建卷组：创建卷组的命令为vgcreate，将使用pvcreate建立的物理卷创建为一个完整的卷组：" class="headerlink" title="创建卷组：创建卷组的命令为vgcreate，将使用pvcreate建立的物理卷创建为一个完整的卷组："></a>创建卷组：创建卷组的命令为vgcreate，将使用pvcreate建立的物理卷创建为一个完整的卷组：</h2><pre><code>vgcreate web_document /dev/hda5 /dev/hdb</code></pre><p>vgcreate命令第一个参数是指定该卷组的逻辑名：web_document。后面参数是指定希望添加到该卷组的所有分区和磁盘。vgcreate 在创建卷组web_document以外，还设置使用大小为4MB的PE（默认为4MB），这表示卷组上创建的所有逻辑卷都以4MB为增量单位来进行扩充 或缩减。由于内核原因，PE大小决定了逻辑卷的最大大小，4MB的PE决定了单个逻辑卷最大容量为256GB，若希望使用大于256G的逻辑卷则创建卷组 时指定更大的PE。PE大小范围为8KB到512MB，并且必须总是2的倍数（使用-s指定，具体请参考manvgcreate）。（centos 6.2系统已发现没有这种限制）<br>4、激活卷组<br>为了立即使用卷组而不是重新启动系统，可以使用vgchange来激活卷组：</p>
+<pre><code>vgchange -ay web_document</code></pre><p>5、添加新的物理卷到卷组中<br>当系统安装了新的磁盘并创建了新的物理卷，而要将其添加到已有卷组时，就需要使用vgextend命令：</p>
+<pre><code>vgextend web_document /dev/hdc1</code></pre><p>这里/dev/hdc1是新的物理卷。</p>
+<h2 id="centos7"><a href="#centos7" class="headerlink" title="centos7"></a>centos7</h2><p>ifconfig command not found<br>用yum install net-tools 解决<br>ifup 网卡名启动激活网卡网卡<br>vi /etc/resolv.con<br>nameserver 223.5.5.5</p>
+<p>vi /etc/sysconfig/network-scripts/iflc-eth0<br>将里面的onboot=yes</p>
+<p>systemctl restart network.service</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a  href="/2017/07/27/Centos7-openstack%E6%9D%82%E9%A1%B9/">Centos-openstack杂项</a></p>
+        <p><span>文章作者:</span><a  href="/" title="访问 breakonion 的个人博客">breakonion</a></p>
+        <p><span>发布时间:</span>2017年07月27日 - 15时09分</p>
+        <p><span>最后更新:</span>2017年10月06日 - 14时41分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/07/27/Centos7-openstack%E6%9D%82%E9%A1%B9/" title="Centos-openstack杂项">http://ljg.dropsec.xyz/2017/07/27/Centos7-openstack%E6%9D%82%E9%A1%B9/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://ljg.dropsec.xyz/2017/07/27/Centos7-openstack%E6%9D%82%E9%A1%B9/　　作者: breakonion" title=""></span>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" target="_blank" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a  href="/2017/08/10/openstack-cinder%E5%8D%B7%E6%97%A0%E6%B3%95%E5%88%A0%E9%99%A4/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          openstack cinder卷无法删除 
+        
+      </div>
+    </a>
+  
+  
+    <a  href="/2017/07/24/KMS%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E5%8F%8A%E4%BD%BF%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">KMS服务器搭建及使用</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装chrony"><span class="toc-number">1.</span> <span class="toc-text">安装chrony</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置时间同步源"><span class="toc-number">2.</span> <span class="toc-text">配置时间同步源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#启动服务并加入开机启动项"><span class="toc-number">3.</span> <span class="toc-text">启动服务并加入开机启动项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看时间同步"><span class="toc-number">4.</span> <span class="toc-text">查看时间同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改时区"><span class="toc-number">5.</span> <span class="toc-text">修改时区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改时间加入到硬件"><span class="toc-number">6.</span> <span class="toc-text">修改时间加入到硬件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充"><span class="toc-number"></span> <span class="toc-text">补充</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#命令"><span class="toc-number">1.</span> <span class="toc-text">命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#yum被占用"><span class="toc-number">2.</span> <span class="toc-text">yum被占用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关闭firewall"><span class="toc-number">3.</span> <span class="toc-text">关闭firewall</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装iptables防火墙"><span class="toc-number">4.</span> <span class="toc-text">安装iptables防火墙</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#openstack-排错"><span class="toc-number"></span> <span class="toc-text">openstack 排错</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cinder配置文件都没错但就是从控制节点用命令-cinder-service-list验证时发现cinder一直up不起来"><span class="toc-number">1.</span> <span class="toc-text">cinder配置文件都没错但就是从控制节点用命令 cinder service-list验证时发现cinder一直up不起来</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dashboard仪表盘无法登陆"><span class="toc-number">2.</span> <span class="toc-text">dashboard仪表盘无法登陆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建实例No-valid-host-was-found-There-are-not-enough-hosts-available"><span class="toc-number">3.</span> <span class="toc-text">创建实例No valid host was found. There are not enough hosts available</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建实例遇到"><span class="toc-number">4.</span> <span class="toc-text">创建实例遇到</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#打开OpenStack控制台后，控制台出错，显示Failed-to-connect-to-server-code-1006-，如下图"><span class="toc-number">5.</span> <span class="toc-text">打开OpenStack控制台后，控制台出错，显示Failed to connect to server (code: 1006)，如下图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用cirros镜像启动实例-OpenStack创建实例控制台显示starting-up…-没反应"><span class="toc-number">6.</span> <span class="toc-text">使用cirros镜像启动实例 OpenStack创建实例控制台显示starting up… 没反应</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除网络出错"><span class="toc-number">7.</span> <span class="toc-text">删除网络出错</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#磁盘操作"><span class="toc-number"></span> <span class="toc-text">磁盘操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LVM-pvcreate提示：Device-dev-sdb-not-found-or-ignored-by-filtering"><span class="toc-number">1.</span> <span class="toc-text">LVM pvcreate提示：Device &#x2F;dev&#x2F;sdb not found (or ignored by filtering)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建卷组：创建卷组的命令为vgcreate，将使用pvcreate建立的物理卷创建为一个完整的卷组："><span class="toc-number"></span> <span class="toc-text">创建卷组：创建卷组的命令为vgcreate，将使用pvcreate建立的物理卷创建为一个完整的卷组：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#centos7"><span class="toc-number"></span> <span class="toc-text">centos7</span></a>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <section class="changyan" id="comments">
+  <!--<div id="uyan_frame"></div>-->
+  <div id="SOHUCS"></div>
+  <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js"></script>
+  <script type="text/javascript">
+    window.changyan.api.config({
+      appid: 'xxxx',
+      conf: 'xxxxxxxxx'
+    });
+  </script>
+</section>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a  href="/2017/08/10/openstack-cinder%E5%8D%B7%E6%97%A0%E6%B3%95%E5%88%A0%E9%99%A4/" title="上一篇: openstack cinder卷无法删除 ">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a  href="/2017/07/24/KMS%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E5%8F%8A%E4%BD%BF%E7%94%A8/" title="下一篇: KMS服务器搭建及使用">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/01/02/SNMP%E5%8D%8F%E8%AE%AE%E8%AE%A4%E7%9F%A5/">SNMP协议认知</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/03/Centos7-%E5%9F%BA%E7%A1%80%E8%BF%90%E7%BB%B4%E5%91%BD%E4%BB%A4/">Centos7 基础运维命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/01/openstack%E5%AE%9E%E4%BE%8B%E9%97%AE%E9%A2%98/">openstack实例问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/10/openstack-cinder%E5%8D%B7%E6%97%A0%E6%B3%95%E5%88%A0%E9%99%A4/">openstack cinder卷无法删除 </a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/27/Centos7-openstack%E6%9D%82%E9%A1%B9/">Centos-openstack杂项</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/24/KMS%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E5%8F%8A%E4%BD%BF%E7%94%A8/">KMS服务器搭建及使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/12/%E9%80%9A%E8%BF%87Windows%E9%83%A8%E7%BD%B2%E6%9C%8D%E5%8A%A1%EF%BC%88WDS%EF%BC%89%E5%AE%9E%E7%8E%B0%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%89%B9%E9%87%8F%E5%AE%89%E8%A3%85%E5%92%8C%E5%AE%9A%E5%88%B6/">通过Windows部署服务实现批量部署操作系统</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/10/first%20blood/">breakapple</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/09/test/">hello world</a></li></ul>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        // $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2020 breakonion
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a><a href="https://github.com/maochunguang" target="_blank">Blog</a> by tommy
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >极客到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 4;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'xxxxxx', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?xxcxcxcsdsf";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>
